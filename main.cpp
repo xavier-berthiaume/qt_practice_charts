@@ -19,12 +19,13 @@ QT_CHARTS_USE_NAMESPACE
 QChartView *createBarChart();
 QChartView *createStackedBarChart();
 QChartView *createLineChart();
+QChartView *createPieChart();
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    QChartView *chartView = createLineChart();
+    QChartView *chartView = createPieChart();
 
     MainWindow w;
 
@@ -210,5 +211,51 @@ QChartView *createLineChart() {
     QChartView *chart_view = new QChartView(chart);
     chart_view->setRenderHint(QPainter::Antialiasing, true);
 
+    return chart_view;
+}
+
+QChartView *createPieChart() {
+
+    QPieSeries *series = new QPieSeries();
+    series->append("Vegetables", .40);
+    series->append("Beans", .20);
+    series->append("Fruit", .15);
+    series->append("Seeds/Nuts", .10);
+    series->append("Whole Grains", .15);
+
+    QPieSlice *slice0 = new QPieSlice();
+    slice0 = series->slices().at(0);
+    slice0->setLabelVisible();
+
+    QPieSlice *slice1 = new QPieSlice();
+    slice1 = series->slices().at(1);
+    slice1->setExploded();
+    slice1->setLabelVisible();
+    slice1->setPen(QPen(Qt::darkGreen, 2));
+    slice1->setBrush(Qt::green);
+
+    QPieSlice *slice2 = new QPieSlice();
+    slice2 = series->slices().at(2);
+    slice2->setLabelVisible();
+
+    QPieSlice *slice3 = new QPieSlice();
+    slice3 = series->slices().at(3);
+
+    QPieSlice *slice4 = new QPieSlice();
+    slice4 = series->slices().at(4);
+    slice4->setExploded();
+    slice4->setLabelVisible();
+    slice4->setPen(QPen(Qt::darkBlue, 4));
+    slice4->setBrush(Qt::blue);
+
+    QChart *chart = new QChart();
+    chart->addSeries(series);
+    chart->setTitle("Food consumed this week");
+    chart->setTitleBrush(Qt::darkCyan);
+    chart->legend()->hide();
+    chart->setAnimationOptions(QChart::AllAnimations);
+
+    QChartView *chart_view = new QChartView(chart);
+    chart_view->setRenderHint(QPainter::Antialiasing, true);
     return chart_view;
 }
